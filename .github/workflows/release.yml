@@ -1,0 +1,65 @@
+name: Release
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set node
+        uses: actions/setup-node@v4
+        with:
+          node-version: current
+          cache: pnpm
+          registry-url: https://registry.npmjs.org/
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Prepare for release
+        run: |
+          pnpm run lint
+          pnpm run build
+
+      - name: Read version
+        id: version_to_release
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            const fs = require('fs');
+            const pkg = JSON.parse(
+              fs.readFileSync('./packages/vite-plugin-garfish/package.json', 'utf8')
+            );
+            return pkg.version;
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Publish to NPM
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cp README.md packages/vite-plugin-garfish/README.md
+          git tag vite-plugin-garfish@${{ steps.version_to_release.outputs.result }}
+          git push origin vite-plugin-garfish@${{ steps.version_to_release.outputs.result }}
+          pnpm --filter vite-plugin-garfish-mf publish --no-git-checks --access public
+
+      - name: GitHub release
+        run: pnpx changelogithub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
