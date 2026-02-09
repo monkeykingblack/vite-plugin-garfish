@@ -16,10 +16,20 @@
     "vite-plugin",
     "vite-plugin-garfish"
   ],
+  "homepage": "https://github.com/monkeykingblack/vite-plugin-garfish.git#readme",
+  "bugs": {
+    "url": "https://github.com/monkeykingblack/vite-plugin-garfish/issues"
+  },
   "license": "MIT",
   "author": "monkeykingblack",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/monkeykingblack/vite-plugin-garfish.git"
+  },
   "files": [
-    "./dist"
+    "./dist",
+    "README.md",
+    "LICENSE"
   ],
   "type": "module",
   "exports": {
