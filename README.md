@@ -1,4 +1,4 @@
-## vite-plugin-garfish
+## vite-plugin-garfish-mf
 
 A Vite plugin that helps you run a Vite sub-application inside a micro-frontend architecture powered by [Garfish](https://www.garfishjs.org).
 
@@ -7,7 +7,7 @@ This plugin adapts Vite-based apps to work smoothly as sub-applications, handlin
 ### Installation
 
 ```
-npm install --save-dev vite-plugin-garfish
+npm install --save-dev vite-plugin-garfish-mf
 ```
 
 ### Getting Started
@@ -19,7 +19,7 @@ Add the plguin to sub-application's Vite configuration like below:
 
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import garfish from "vite-plugin-garfish";
+import garfish from "vite-plugin-garfish-mf";
 
 export default defineConfig({
   plugins: [react(), garfish({

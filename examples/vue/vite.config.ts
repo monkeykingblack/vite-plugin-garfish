@@ -1,6 +1,6 @@
 import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite";
-import garfish from "vite-plugin-garfish";
+import garfish from "vite-plugin-garfish-mf";
 
 // https://vite.dev/config/
 export default defineConfig({

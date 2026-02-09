@@ -1,6 +1,6 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import garfish from "vite-plugin-garfish";
+import garfish from "vite-plugin-garfish-mf";
 
 // https://vite.dev/config/
 export default defineConfig({
