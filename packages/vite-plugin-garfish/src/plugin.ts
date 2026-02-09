@@ -1,17 +1,14 @@
 import { load } from "cheerio";
-import merge from "lodash.merge";
-import { type PluginOption, type ResolvedConfig, type UserConfig } from "vite";
+import { type PluginOption, type ResolvedConfig } from "vite";
 
 import { injectGarfishProvider, reactRefreshScriptTransform, scriptTransform } from "./utils";
 
 export type Options = {
-  name: string;
   base: string;
   sandbox?: boolean;
 };
 
 export const vitePluginGarfish = ({
-  name,
   base = "http://localhost:5173",
   sandbox = true,
 }: Options): PluginOption => {

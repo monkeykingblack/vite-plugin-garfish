@@ -19,8 +19,7 @@
   "license": "MIT",
   "author": "monkeykingblack",
   "files": [
-    "./dist",
-    "./src"
+    "./dist"
   ],
   "type": "module",
   "exports": {
@@ -32,8 +31,7 @@
       "require": {
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
-      },
-      "development": "./src/index.ts"
+      }
     }
   },
   "scripts": {
@@ -43,7 +41,6 @@
     "cheerio": "^1.2.0"
   },
   "devDependencies": {
-    "@types/lodash.merge": "^4.6.9",
     "domhandler": "^5.0.3",
     "tsdown": "^0.20.3"
   },
