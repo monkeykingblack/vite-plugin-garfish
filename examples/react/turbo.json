@@ -1,0 +1,12 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["vite-plugin-garfish#build"]
+    },
+    "dev": {
+      "dependsOn": ["vite-plugin-garfish#build"]
+    }
+  }
+}

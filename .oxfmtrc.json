@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxfmt/configuration_schema.json",
+  "experimentalSortImports": {
+    "groups": [
+      ["side-effect"],
+      ["builtin"],
+      ["react", "external"],
+      ["internal"],
+      ["parent"],
+      ["sibling"],
+      ["index"],
+      ["side-effect-style", "style"],
+      ["type"]
+    ],
+    "newlinesBetween": true,
+    "customGroups": [
+      {
+        "groupName": "react",
+        "elementNamePattern": ["^react$", "^react-.+"]
+      }
+    ]
+  },
+  "ignorePatterns": ["dist/**", ".turbo/**", "lib/**"]
+}

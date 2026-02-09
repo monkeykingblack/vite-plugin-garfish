@@ -1,0 +1,42 @@
+import type { Cheerio } from "cheerio";
+import type { Element } from "domhandler";
+
+export function scriptTransform(script$: Cheerio<Element>, publicPath: string) {
+  let src = script$.attr("src");
+  if (!src) return;
+
+  script$
+    .removeAttr("src")
+    .removeAttr("type")
+    .html(`import("${publicPath + src}")`);
+
+  return script$;
+}
+
+export function reactRefreshScriptTransform(script$: Cheerio<Element>, importPath: string) {
+  script$.removeAttr("type").html(`
+    ((window) => {
+      import("${importPath}").then(({default: RefreshRuntime}) => {
+        RefreshRuntime.injectIntoGlobalHook(window);
+        window.$RefreshReg$ = () => {};
+        window.$RefreshSig$ = () => (type) => type;
+        window.__vite_plugin_react_preamble_installed__ = true;
+      })
+    })(new Function("return this")());
+  `);
+}
+
+export function injectGarfishProvider(script$: Cheerio<Element>, publicPath?: string) {
+  let src = script$.attr("src");
+  if (!src) return;
+
+  script$.removeAttr("src").removeAttr("type").html(`
+    if (window.__GARFISH__ && typeof __GARFISH_EXPORTS__ === "object" && __GARFISH_EXPORTS__) {
+      __GARFISH_EXPORTS__.provider = new Promise((resolve) => {
+        import("${publicPath + src}").then(({provider}) => provider()).then((res) => resolve(res))
+      })
+    } else {
+      import("${publicPath + src}")
+    }
+  `);
+}

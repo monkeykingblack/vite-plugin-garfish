@@ -1,7 +1,5 @@
 {
-  "eslint.workingDirectories": [
-    {
-      "mode": "auto"
-    }
-  ]
+  "[typescript][typescriptreact][react][javascriptreact][css][scss][less][html][json]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  }
 }
