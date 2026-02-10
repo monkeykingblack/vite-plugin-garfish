@@ -6,7 +6,8 @@
       "dependsOn": ["vite-plugin-garfish-mf#build"]
     },
     "dev": {
-      "dependsOn": ["vite-plugin-garfish-mf#build"]
+      "dependsOn": ["vite-plugin-garfish-mf#build"],
+      "cache": false
     }
   }
 }
