@@ -13,10 +13,10 @@ export function scriptTransform(script$: Cheerio<Element>, publicPath: string) {
   return script$;
 }
 
-export function reactRefreshScriptTransform(script$: Cheerio<Element>, importPath: string) {
+export function reactHRMScriptTransfrom(script$: Cheerio<Element>, publicPath: string) {
   script$.removeAttr("type").html(`
     ((window) => {
-      import("${importPath}").then(({default: RefreshRuntime}) => {
+      import("${publicPath}/@react-refresh").then(({default: RefreshRuntime}) => {
         RefreshRuntime.injectIntoGlobalHook(window);
         window.$RefreshReg$ = () => {};
         window.$RefreshSig$ = () => (type) => type;

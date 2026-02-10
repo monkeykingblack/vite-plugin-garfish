@@ -4,7 +4,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 
 if (!window.__GARFISH__) {
-  await import("./style.css");
+  import("./style.css");
   createApp(App).mount("#app");
 }
 

@@ -1,7 +1,8 @@
 import { load } from "cheerio";
-import { type PluginOption, type ResolvedConfig } from "vite";
 
-import { injectGarfishProvider, reactRefreshScriptTransform, scriptTransform } from "./utils";
+import { injectGarfishProvider, reactHRMScriptTransfrom, scriptTransform } from "./utils";
+
+import type { PluginOption, ResolvedConfig } from "vite";
 
 export type Options = {
   base: string;
@@ -13,70 +14,59 @@ export const vitePluginGarfish = ({
   sandbox = true,
 }: Options): PluginOption => {
   let config: ResolvedConfig;
-  let publicPath = new URL(base);
+  let isUseWithReact: boolean;
+
   return [
     {
-      name: "garfish:resolve-config",
+      name: "vite-plugin-garfish-fm:resolve-config",
       enforce: "post",
       config() {
+        let url = new URL(base);
         return {
           base,
           server: {
-            port: Number(publicPath.port),
-            origin: publicPath.origin,
+            port: Number(url.port),
+            origin: url.origin,
           },
           preview: {
-            port: Number(publicPath.port),
+            port: Number(url.port),
           },
         };
       },
       configResolved(resolvedConfig) {
         config = resolvedConfig;
+        isUseWithReact =
+          config.plugins.findIndex(
+            (plugin) => plugin.name === "vite:react-swc" || plugin.name === "vite:react-babel",
+          ) !== -1;
       },
     },
     {
-      name: "garfish:serve",
+      name: "vite-plugin-garfish-fm:html-transfrom",
       enforce: "post",
       apply: "serve",
-      configureServer(server) {
-        return () =>
-          server.middlewares.use((_, res, next) => {
-            if (config.isProduction) return next();
-            const end = res.end.bind(res);
-
-            res.end = (...args: any[]) => {
-              let [htmlStr, ...rest] = args;
-              if (typeof htmlStr === "string") {
-                const $ = load(htmlStr);
-                scriptTransform($($("script[src=/@vite/client]").get(0)), base);
-
-                const moduleScripts$ = $("script:not([src])[type=module]");
-                moduleScripts$.each((_, script) => {
-                  const moduleScript$ = $(script);
-                  if (moduleScript$.text().includes(`${config.base}@react-refresh`)) {
-                    reactRefreshScriptTransform(moduleScript$, base + "/@react-refresh");
-                  }
-                });
-                htmlStr = $.html();
-              }
-              return end(htmlStr, ...rest);
-            };
-
-            return next();
-          });
-      },
-    },
-    {
-      name: "garfish:html-transfrom",
-      enforce: "post",
       transformIndexHtml(html) {
         const $ = load(html);
-        const moduleScripts$ = $("body script[src][type], head script[src][crossorigin='']");
+        const moduleScripts$ = $("body script[src][type], head script[src]");
         if (sandbox) {
-          injectGarfishProvider(moduleScripts$.last(), config.command === "build" ? "" : base);
+          injectGarfishProvider(moduleScripts$.last(), base);
         }
         moduleScripts$.each((_, script$) => void scriptTransform($(script$), base));
+
+        if (isUseWithReact) {
+          const reactHMRScript = $("script:not([src])[type=module]").filter((_, el) => {
+            const content = $(el).html() || "";
+
+            return content.includes("/@react-refresh");
+          });
+
+          if (reactHMRScript.length > 0) {
+            reactHRMScriptTransfrom($(reactHMRScript[0]), base);
+          }
+        }
+
         const htmlStr = $.html();
+
         return htmlStr;
       },
     },

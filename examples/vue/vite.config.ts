@@ -7,8 +7,10 @@ export default defineConfig({
   plugins: [
     vue(),
     garfish({
-      name: "vue",
       base: "http://localhost:3002",
     }),
   ],
+  build: {
+    minify: false,
+  },
 });
