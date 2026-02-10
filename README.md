@@ -12,7 +12,7 @@ npm install --save-dev vite-plugin-garfish-mf
 
 ### Getting Started
 
-Add the plguin to sub-application's Vite configuration like below:
+Add the plugin to sub-application's Vite configuration shown below (make sure the plugin is placed after the **react**/**vue** plugin, if present):
 
 ```js
 // vite.config.js
