@@ -2,7 +2,7 @@ import { load } from "cheerio";
 
 import { injectGarfishProvider, reactHRMScriptTransfrom, scriptTransform } from "./utils";
 
-import type { PluginOption, ResolvedConfig } from "vite";
+import type { Plugin, ResolvedConfig } from "vite";
 
 export type Options = {
   base: string;
@@ -12,7 +12,7 @@ export type Options = {
 export const vitePluginGarfish = ({
   base = "http://localhost:5173",
   sandbox = true,
-}: Options): PluginOption => {
+}: Options): Plugin[] => {
   let config: ResolvedConfig;
   let isUseWithReact: boolean;
 
