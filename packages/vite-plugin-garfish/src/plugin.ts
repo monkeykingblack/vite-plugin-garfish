@@ -1,3 +1,4 @@
+import { transform } from "@swc/core";
 import { load } from "cheerio";
 
 import { injectGarfishProvider, reactHRMScriptTransfrom, scriptTransform } from "./utils";
@@ -5,13 +6,30 @@ import { injectGarfishProvider, reactHRMScriptTransfrom, scriptTransform } from 
 import type { Plugin, ResolvedConfig } from "vite";
 
 export type Options = {
+  /**
+   * Set the base URL when serving dev server and base assets when building
+   *
+   * More info https://vite.dev/config/shared-options#base
+   */
   base: string;
+  /**
+   * Set to `true` if you are running sub-app in sandbox environment
+   *
+   * Read more: https://www.garfishjs.org/api/run.html#sandbox
+   *
+   */
   sandbox?: boolean;
+  /**
+   * Set to `true` if you are using plugin [GarfishEsModule](https://www.npmjs.com/package/@garfish/es-module)
+   *
+   */
+  esModule?: boolean;
 };
 
 export const vitePluginGarfish = ({
   base = "http://localhost:5173",
   sandbox = true,
+  esModule = false,
 }: Options): Plugin[] => {
   let config: ResolvedConfig;
   let isUseWithReact: boolean;
@@ -48,7 +66,7 @@ export const vitePluginGarfish = ({
       transformIndexHtml(html) {
         const $ = load(html);
         const moduleScripts$ = $("body script[src][type], head script[src]");
-        if (sandbox) {
+        if (sandbox && !esModule) {
           injectGarfishProvider(moduleScripts$.last(), base);
         }
         moduleScripts$.each((_, script$) => void scriptTransform($(script$), base));
@@ -68,6 +86,33 @@ export const vitePluginGarfish = ({
         const htmlStr = $.html();
 
         return htmlStr;
+      },
+    },
+    {
+      name: "vite-plugin-garfish-fm:legacy-transform",
+      enforce: "post",
+      apply: "serve",
+      async transform(code) {
+        if (esModule) {
+          return null;
+        }
+        const result = await transform(code, {
+          jsc: {
+            target: "es2018",
+            parser: {
+              syntax: "ecmascript",
+            },
+          },
+          module: {
+            type: "es6",
+          },
+          sourceMaps: true,
+        });
+
+        return {
+          code: result.code,
+          map: result.map,
+        };
       },
     },
   ];
