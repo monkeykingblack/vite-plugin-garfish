@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-garfish-mf",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A vite plugin for running Micro frontend applications using garfish",
   "keywords": [
     "@garfish/react-bridge",
