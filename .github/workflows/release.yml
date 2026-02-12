@@ -32,7 +32,7 @@ jobs:
       - name: Prepare for release
         run: |
           pnpm run lint
-          pnpm run build
+          pnpm run build --filter vite-plugin-garfish-mf
 
       - name: Read version
         id: version_to_release
