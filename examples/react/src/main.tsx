@@ -5,10 +5,10 @@ import RootComponent from "./root";
 
 if (!window.__GARFISH__) {
   import("./index.css");
-  createRoot(document.getElementById("root")!).render(<RootComponent />);
+  createRoot(document.getElementById("app")!).render(<RootComponent />);
 }
 
 export const provider = reactBridge({
-  el: "#root",
+  el: "#app",
   rootComponent: RootComponent,
 });

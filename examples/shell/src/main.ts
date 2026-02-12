@@ -1,24 +1,27 @@
+import { GarfishEsModule } from "@garfish/es-module";
 import Garfish from "garfish";
+import * as V from "vue";
+
+import App from "./app.vue";
+import { SubAppConfgiure } from "./config";
+import { router } from "./router";
 
 import "./style.css";
 
 import type { interfaces } from "garfish";
 
+V.createApp(App).use(router).mount("#root");
+
+Garfish.setExternal({
+  vue: V,
+});
+
 const config: interfaces.Options = {
   disablePreloadApp: true,
-  domGetter: "#app",
-  apps: [
-    {
-      name: "react",
-      activeWhen: "/react",
-      entry: "http://localhost:3001",
-    },
-    {
-      name: "vue",
-      activeWhen: "/vue",
-      entry: "http://localhost:3002",
-    },
-  ],
+  basename: "/",
+  domGetter: "#sub-app-container",
+  plugins: [GarfishEsModule()],
+  apps: SubAppConfgiure,
 };
 
 Garfish.run(config);
