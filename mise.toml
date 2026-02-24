@@ -1,2 +1,22 @@
 [tools]
 pnpm = "10.28.2"
+
+[tasks.dev]
+description = "Run examples in develop environment"
+run = "pnpm run dev"
+
+[tasks."dev:shell"]
+description = "Run example shell application in develop environment"
+run = "pnpm run dev --filter shell"
+
+[tasks."dev:react"]
+description = "Run example react application in develop environment"
+run = "pnpm run dev --filter react"
+
+[tasks."dev:vue"]
+description = "Run example vue application in develop environment"
+run = "pnpm run dev --filter vue"
+
+[tasks.build]
+description = "Build plugin"
+run = "pnpm run build --filter vite-plugin-garfish-mf"
