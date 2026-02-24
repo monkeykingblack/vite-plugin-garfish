@@ -11,8 +11,8 @@
   },
   "devDependencies": {
     "oxfmt": "^0.28.0",
-    "oxlint": "^1.43.0",
-    "turbo": "^2.8.3",
+    "oxlint": "^1.50.0",
+    "turbo": "^2.8.10",
     "typescript": "5.9.2"
   },
   "engines": {
