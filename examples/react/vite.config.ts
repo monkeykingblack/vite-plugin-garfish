@@ -10,11 +10,7 @@ export default defineConfig({
     }),
     garfish({
       base: "http://localhost:3001",
-      sandbox: true,
       esModule: true,
     }),
   ],
-  build: {
-    minify: false,
-  },
 });

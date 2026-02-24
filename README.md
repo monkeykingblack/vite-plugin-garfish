@@ -12,7 +12,7 @@ npm install --save-dev vite-plugin-garfish-mf
 
 ### Getting Started
 
-Add the plugin to sub-application's Vite configuration shown below (make sure the plugin is placed after the **react**/**vue** plugin, if present):
+Add the plugin to sub-application's Vite configuration shown below (make sure the plugin is placed after the **react** or **vue** plugin, if present):
 
 ```js
 // vite.config.js
@@ -24,17 +24,10 @@ import garfish from "vite-plugin-garfish-mf";
 export default defineConfig({
   plugins: [react(), garfish({
       base: "http://localhost:3000",
-      sandbox: true
     })
   ],
 });
 ```
-
-|  Property   | Prequire |  Type   |          Default          | Description                                                                                                                  |
-| :---------: | :------: | :-----: | :-----------------------: | :--------------------------------------------------------------------------------------------------------------------------- |
-|  **base**   |   [x]    | string  | **http://localhost:5173** | Base origin where the sub-application is served. Overrides server.port and server.origin                                     |
-| **sandbox** |   [ ]    | boolean |         **true**          | Enable this when running the sub-application inside a  [Sandbox](https://www.garfishjs.org/api/run.html#sandbox) environment |
-
 
 ### How It Works
 

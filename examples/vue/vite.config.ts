@@ -8,7 +8,6 @@ export default defineConfig({
     vue(),
     garfish({
       base: "http://localhost:3002",
-      sandbox: true,
       esModule: true,
     }),
   ],

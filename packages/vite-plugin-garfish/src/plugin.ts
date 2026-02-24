@@ -13,13 +13,6 @@ export type Options = {
    */
   base: string;
   /**
-   * Set to `true` if you are running sub-app in sandbox environment
-   *
-   * Read more: https://www.garfishjs.org/api/run.html#sandbox
-   *
-   */
-  sandbox?: boolean;
-  /**
    * Set to `true` if you are using plugin [GarfishEsModule](https://www.npmjs.com/package/@garfish/es-module)
    *
    */
@@ -28,7 +21,6 @@ export type Options = {
 
 export const vitePluginGarfish = ({
   base = "http://localhost:5173",
-  sandbox = true,
   esModule = false,
 }: Options): Plugin[] => {
   let config: ResolvedConfig;
@@ -66,9 +58,7 @@ export const vitePluginGarfish = ({
       transformIndexHtml(html) {
         const $ = load(html);
         const moduleScripts$ = $("body script[src][type], head script[src]");
-        if (sandbox && !esModule) {
-          injectGarfishProvider(moduleScripts$.last(), base);
-        }
+        injectGarfishProvider(moduleScripts$.last(), base);
         moduleScripts$.each((_, script$) => void scriptTransform($(script$), base));
 
         if (isUseWithReact) {
@@ -93,7 +83,7 @@ export const vitePluginGarfish = ({
       enforce: "post",
       apply: "serve",
       async transform(code) {
-        if (esModule) {
+        if (!esModule) {
           return null;
         }
         const result = await transform(code, {
