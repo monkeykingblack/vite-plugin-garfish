@@ -11,4 +11,5 @@ if (!window.__GARFISH__) {
 export const provider = reactBridge({
   el: "#app",
   rootComponent: RootComponent,
+  errorBoundary: () => <div></div>,
 });

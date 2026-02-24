@@ -1,4 +1,6 @@
-export const SubAppConfgiure = [
+import { type interfaces } from "garfish";
+
+export const SubAppConfgiure: interfaces.AppInfo[] = [
   {
     name: "react",
     activeWhen: "/react",
