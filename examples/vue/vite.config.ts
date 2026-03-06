@@ -11,7 +11,4 @@ export default defineConfig({
       esModule: true,
     }),
   ],
-  build: {
-    minify: false,
-  },
 });
